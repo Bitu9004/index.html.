@@ -1,1 +1,216 @@
-# index.html.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossier: Bitu_Vortex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030303;
+            --surface: #0a0a0c;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.4);
+            --text: #ffffff;
+            --text-dim: #64748b;
+            --warning: #facc15;
+            --error: #ef4444;
+            --success: #22c55e;
+            --border: #1a1a1e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            background: linear-gradient(45deg, #030303 0%, #080810 100%);
+            color: var(--text);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 850px; margin: 60px auto; padding: 0 30px; animation: fadeIn 1s ease-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Top Status Bar --- */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .status-left { display: flex; align-items: center; gap: 10px; }
+        .status-right { letter-spacing: 2px; text-align: right; }
+
+        .pulse {
+            width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent); animation: pulse-animation 2s infinite;
+        }
+        @keyframes pulse-animation {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        /* --- Header --- */
+        header { border-left: 3px solid var(--accent); padding-left: 30px; margin-bottom: 40px; }
+        h1 {
+            font-size: 3.5rem; font-weight: 800; letter-spacing: -2px;
+            overflow: hidden; white-space: nowrap; border-right: 3px solid var(--accent);
+            width: 0; animation: typing 2s steps(20, end) forwards, blink 0.8s infinite;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink { from { border-color: transparent } to { border-color: var(--accent) } }
+        .title-sub { color: var(--text-dim); font-family: 'JetBrains Mono', monospace; margin-top: 10px; }
+
+        /* --- Duty Monitor --- */
+        .duty-monitor {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .duty-header {
+            display: flex; justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            color: var(--text-dim); margin-bottom: 12px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .duty-grid { display: grid; grid-template-columns: repeat(24, 1fr); gap: 4px; height: 12px; }
+        .duty-cell { background: #1a1a1e; border-radius: 1px; transition: 0.3s; }
+        .duty-cell.active-high { background: #3b82f6; box-shadow: 0 0 8px var(--accent-glow); }
+        .duty-cell.variable { background: rgba(59, 130, 246, 0.3); animation: flicker 3s infinite; }
+        @keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* --- Communication Section --- */
+        .no-hello-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 50px;
+        }
+        .chat-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .chat-box { padding: 15px; border-radius: 6px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; }
+        .bad { background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); }
+        .good { background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.2); }
+        .chat-label { font-weight: bold; margin-bottom: 10px; display: block; }
+
+        /* --- Clearance --- */
+        .section-header {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            color: var(--text-dim); margin: 40px 0 20px 0;
+            display: flex; align-items: center; gap: 15px;
+        }
+        .section-header::after { content: ""; height: 1px; flex-grow: 1; background: var(--border); }
+        .role-entry {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px; background: rgba(255,255,255,0.01);
+            border: 1px solid var(--border); border-radius: 4px; margin-bottom: 10px;
+        }
+
+        /* --- Footer --- */
+        .verification-bar {
+            margin-top: 40px; padding: 10px 0;
+            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .signature-compact { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-style: italic; opacity: 0.8; }
+        footer { margin-top: 40px; padding-bottom: 30px; text-align: center; }
+
+        @media (max-width: 600px) { .chat-comparison { grid-template-columns: 1fr; } h1 { font-size: 2.2rem; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="status-bar">
+        <div class="status-left">
+            <div class="pulse"></div>
+            <span>SYSTEM_LOAD_COMPLETE // BITU_VORTEX_OS</span>
+        </div>
+        <div class="status-right">
+            SERVER_TIME: <span id="server-clock">09:00:00</span>
+        </div>
+    </div>
+
+    <header>
+        <h1>Bitu_Vortex</h1>
+        <p class="title-sub">Server 1 • Deputy Of APD</p>
+    </header>
+
+    <div class="duty-monitor">
+        <div class="duty-header">
+            <span>Operational_Duty_Cycle</span>
+            <span style="color: var(--success);">Protocol: ACTIVE</span>
+        </div>
+        <div class="duty-grid">
+            <div class="duty-cell"></div><div class="duty-cell"></div><div class="duty-cell"></div><div class="duty-cell"></div><div class="duty-cell"></div><div class="duty-cell"></div><div class="duty-cell"></div>
+            <div class="duty-cell active-high"></div><div class="duty-cell active-high"></div><div class="duty-cell active-high"></div><div class="duty-cell active-high"></div><div class="duty-cell active-high"></div>
+            <div class="duty-cell variable"></div><div class="duty-cell variable"></div><div class="duty-cell variable"></div>
+            <div class="duty-cell active-high"></div><div class="duty-cell active-high"></div><div class="duty-cell active-high"></div><div class="duty-cell active-high"></div><div class="duty-cell active-high"></div><div class="duty-cell active-high"></div><div class="duty-cell active-high"></div><div class="duty-cell active-high"></div>
+            <div class="duty-cell"></div>
+        </div>
+    </div>
+
+
+    <div class="section-header">ACTIVE_CLEARANCE</div>
+    <div class="role-entry"><div><h3>Deputy Of APD</h3><span>Server 1</span></div></div>
+
+    <div class="verification-bar">
+        <div style="font-size: 0.7rem; color: var(--accent); font-family: 'JetBrains Mono'; font-weight: 700;">IDENTITY // AUTHENTIC</div>
+        <div class="signature-compact">Bitu_Vortex</div>
+    </div>
+
+    <footer>
+        <p style="color: var(--text-dim); font-size: 0.75rem; opacity: 0.6;">&copy; 2026 Bitu_Vortex. All Rights Reserved.</p>
+        <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 25px;">
+            <p style="
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 0.85rem;
+                color: var(--accent);
+                letter-spacing: 1.5px;
+                font-weight: 700;
+                line-height: 1.6;
+                text-transform: uppercase;
+            ">
+                 Bitu_Vortex
+            </p>
+            <p style="font-size: 0.55rem; margin-top: 20px; color: #1a1a1e; font-family: 'JetBrains Mono'; letter-spacing: 3px;">
+                SECURE_NODE_7 // ENCRYPTION_KEY: 73-5F-37-2D-41-44-4D-49-4E-2D-58
+            </p>
+        </div>
+    </footer>
+</div>
+
+<script>
+    function updateServerTime() {
+        const now = new Date();
+        const hours = "09";
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+
+        const timeString = `${hours}:${minutes}:${seconds}`;
+        const clockElement = document.getElementById('server-clock');
+        if (clockElement) {
+            clockElement.textContent = timeString;
+        }
+    }
+
+    setInterval(updateServerTime, 1000);
+    updateServerTime();
+</script>
+
+</body>
+</html>
